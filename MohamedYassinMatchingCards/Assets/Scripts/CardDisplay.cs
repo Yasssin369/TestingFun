@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using PrimeTween;
 
 public class CardDisplay : MonoBehaviour
 {
@@ -8,24 +9,59 @@ public class CardDisplay : MonoBehaviour
     public GameObject back;
 
     private CardData data;
+    private bool isFaceUp;
+    private bool isLocked;
 
     public void SetData(CardData cardData)
     {
         data = cardData;
         frontImage.sprite = data.image;
+        isFaceUp = false;
+        isLocked = false;
         front.SetActive(false);
         back.SetActive(true);
+        transform.localRotation = Quaternion.identity;
     }
 
-    public void Flip()
+    public void OnCardClicked()
     {
-        bool isShowingFront = front.activeSelf;
-        front.SetActive(!isShowingFront);
-        back.SetActive(isShowingFront);
+        if (isLocked || isFaceUp)
+            return;
+
+        GameController.Instance.OnCardSelected(this);
+    }
+
+    public void FlipToFront()
+    {
+        if (isLocked || isFaceUp)
+            return;
+
+        isFaceUp = true;
+        Sequence.Create()
+            .Group(Tween.LocalRotation(transform, new Vector3(0, 90, 0), 0.15f))
+            .ChainCallback(() => { front.SetActive(true); back.SetActive(false); })
+            .Group(Tween.LocalRotation(transform, Vector3.zero, 0.15f));
+    }
+
+    public void FlipToBack()
+    {
+        if (!isFaceUp)
+            return;
+
+        isFaceUp = false;
+        Sequence.Create()
+            .Group(Tween.LocalRotation(transform, new Vector3(0, 90, 0), 0.15f))
+            .ChainCallback(() => { front.SetActive(false); back.SetActive(true); })
+            .Group(Tween.LocalRotation(transform, Vector3.zero, 0.15f));
     }
 
     public CardData GetData()
     {
         return data;
+    }
+
+    public void Lock()
+    {
+        isLocked = true;
     }
 }

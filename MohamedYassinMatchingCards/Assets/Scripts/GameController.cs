@@ -3,15 +3,23 @@ using System.Collections.Generic;
 
 public class GameController : MonoBehaviour
 {
+    public static GameController Instance;
+
     public GridLayoutController gridLayout;
     public GameObject cardPrefab;
     public Transform cardGrid;
     public List<CardData> cardPool;
-
     public int rows = 2;
     public int columns = 2;
 
-  
+    private List<CardDisplay> flippedCards = new List<CardDisplay>();
+    private bool isCheckingMatch;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Start()
     {
         StartCoroutine(DelayedSetup());
@@ -22,6 +30,7 @@ public class GameController : MonoBehaviour
         yield return new WaitForEndOfFrame();
         SetupGame(rows, columns);
     }
+
     public void SetupGame(int rowCount, int columnCount)
     {
         foreach (Transform child in cardGrid)
@@ -55,6 +64,9 @@ public class GameController : MonoBehaviour
             CardDisplay display = newCard.GetComponent<CardDisplay>();
             display.SetData(card);
         }
+
+        flippedCards.Clear();
+        isCheckingMatch = false;
     }
 
     private void Shuffle(List<CardData> list)
@@ -66,5 +78,39 @@ public class GameController : MonoBehaviour
             list[i] = list[rand];
             list[rand] = temp;
         }
+    }
+
+    public void OnCardSelected(CardDisplay card)
+    {
+        if (isCheckingMatch || flippedCards.Contains(card))
+            return;
+
+        card.FlipToFront();
+        flippedCards.Add(card);
+
+        if (flippedCards.Count == 2)
+        {
+            isCheckingMatch = true;
+            StartCoroutine(CheckMatch());
+        }
+    }
+
+    private System.Collections.IEnumerator CheckMatch()
+    {
+        yield return new WaitForSeconds(0.6f);
+
+        if (flippedCards[0].GetData().cardId == flippedCards[1].GetData().cardId)
+        {
+            flippedCards[0].Lock();
+            flippedCards[1].Lock();
+        }
+        else
+        {
+            flippedCards[0].FlipToBack();
+            flippedCards[1].FlipToBack();
+        }
+
+        flippedCards.Clear();
+        isCheckingMatch = false;
     }
 }
