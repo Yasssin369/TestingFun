@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(GridLayoutGroup))]
 public class GridLayoutController : MonoBehaviour
 {
     public int rows;
@@ -23,6 +24,8 @@ public class GridLayoutController : MonoBehaviour
         gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
         gridLayout.constraintCount = columns;
 
+        LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
+
         float width = rectTransform.rect.width;
         float height = rectTransform.rect.height;
 
@@ -36,6 +39,7 @@ public class GridLayoutController : MonoBehaviour
         float cellHeight = (height - totalSpacingY) / rows;
 
         float size = Mathf.Min(cellWidth, cellHeight);
+
         gridLayout.cellSize = new Vector2(size, size);
     }
 }
