@@ -10,7 +10,8 @@ public class UIController : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI turnsText;
     public TextMeshProUGUI comboText;
-
+    public GameObject gameOverPanel;
+    public TextMeshProUGUI gameOverText;
     private Tween comboTween;
 
     private void Awake()
@@ -48,5 +49,15 @@ public class UIController : MonoBehaviour
     {
         comboText.text = "";
         comboText.color = new Color(comboText.color.r, comboText.color.g, comboText.color.b, 0f);
+    }
+    public void ShowGameOver(int score, int turns)
+    {
+        gameOverPanel.SetActive(true);
+        gameOverText.text = $"You Win!\nScore: {score}\nTurns: {turns}";
+    }
+    public void OnRestartButtonClicked()
+    {
+        gameOverPanel.SetActive(false);
+        GameController.Instance.SetupGame(GameController.Instance.rows, GameController.Instance.columns);
     }
 }

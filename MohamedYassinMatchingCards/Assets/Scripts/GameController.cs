@@ -158,5 +158,14 @@ public class GameController : MonoBehaviour
         
         if (flippedCards.FindAll(c => !c.IsLocked()).Count >= 2)
             StartCoroutine(CheckMatch());
+        CheckGameOver();
     }
+    private void CheckGameOver()
+    {
+        if (matchedPairs >= totalPairs)
+        {
+            UIController.Instance.ShowGameOver(score, turnsTaken);
+        }
+    }
+
 }
