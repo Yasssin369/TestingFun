@@ -152,7 +152,7 @@ public class GameController : MonoBehaviour
             flippedCards.Remove(card2);
         }
 
-        turnsTaken++;
+       // turnsTaken++;
         UIController.Instance.UpdateTurns(turnsTaken);
 
         

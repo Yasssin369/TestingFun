@@ -7,6 +7,7 @@ public class CardDisplay : MonoBehaviour
     public Image frontImage;
     public GameObject front;
     public GameObject back;
+   
 
     private CardData data;
     private bool isFaceUp;
@@ -63,9 +64,20 @@ public class CardDisplay : MonoBehaviour
     public void Lock()
     {
         isLocked = true;
+
+       
+
+        Sequence.Create()
+        .Group(Tween.ShakeScale(transform, new Vector3(0.1f, 0.1f, 0.1f), 0.2f))
+        .Chain(Tween.Scale(transform, Vector3.zero, 0.3f, Ease.InBack))
+        .ChainCallback(() => {
+            front.SetActive(false);
+            back.SetActive(false);
+        });
     }
+
     public bool IsLocked()
     {
-        return isMatched; 
+        return isLocked;
     }
 }

@@ -227,6 +227,7 @@ MonoBehaviour:
   frontImage: {fileID: 3015983436171666095}
   front: {fileID: 3638619125113320904}
   back: {fileID: 169136078360959693}
+  matchEffectPrefab: {fileID: 9157105887711914197, guid: c4f829cb7dd4b864caf8832ec5b1ee55, type: 3}
 --- !u!1 &3638619125113320904
 GameObject:
   m_ObjectHideFlags: 0
