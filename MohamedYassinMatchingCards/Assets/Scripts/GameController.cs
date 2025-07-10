@@ -13,7 +13,7 @@ public class GameController : MonoBehaviour
     public int columns = 2;
 
     private List<CardDisplay> flippedCards = new List<CardDisplay>();
-    private bool isCheckingMatch;
+    // private bool isCheckingMatch;
 
     private int score = 0;
     private int matchedPairs = 0;
@@ -83,7 +83,7 @@ public class GameController : MonoBehaviour
         }
 
         flippedCards.Clear();
-        isCheckingMatch = false;
+        //isCheckingMatch = false;
     }
 
     private void Shuffle(List<CardData> list)
@@ -99,7 +99,7 @@ public class GameController : MonoBehaviour
 
     public void OnCardSelected(CardDisplay card)
     {
-        if (isCheckingMatch || flippedCards.Contains(card))
+        if (flippedCards.Contains(card))
             return;
 
         card.FlipToFront();
@@ -110,38 +110,53 @@ public class GameController : MonoBehaviour
             turnsTaken++;
             UIController.Instance.UpdateTurns(turnsTaken);
 
-            isCheckingMatch = true;
+            //isCheckingMatch = true;
             StartCoroutine(CheckMatch());
         }
     }
 
     private System.Collections.IEnumerator CheckMatch()
     {
-        yield return new WaitForSeconds(0.6f);
+        var activeCards = flippedCards.FindAll(c => !c.IsLocked());
+        if (activeCards.Count < 2)
+            yield break;
 
-        if (flippedCards[0].GetData().cardId == flippedCards[1].GetData().cardId)
+        var card1 = activeCards[0];
+        var card2 = activeCards[1];
+
+        yield return new WaitForSeconds(0.5f); 
+
+        if (card1.GetData().cardId == card2.GetData().cardId)
         {
             comboStreak++;
             UIController.Instance.ShowCombo(comboStreak);
 
-            flippedCards[0].Lock();
-            flippedCards[1].Lock();
+            card1.Lock();
+            card2.Lock();
 
             score += 100 + comboStreak * 10;
             matchedPairs++;
 
             UIController.Instance.UpdateScore(score);
+            flippedCards.Remove(card1); 
+            flippedCards.Remove(card2);
         }
         else
         {
             comboStreak = 0;
             UIController.Instance.HideCombo();
 
-            flippedCards[0].FlipToBack();
-            flippedCards[1].FlipToBack();
+            card1.FlipToBack();
+            card2.FlipToBack();
+            flippedCards.Remove(card1);
+            flippedCards.Remove(card2);
         }
 
-        flippedCards.Clear();
-        isCheckingMatch = false;
+        turnsTaken++;
+        UIController.Instance.UpdateTurns(turnsTaken);
+
+        
+        if (flippedCards.FindAll(c => !c.IsLocked()).Count >= 2)
+            StartCoroutine(CheckMatch());
     }
 }

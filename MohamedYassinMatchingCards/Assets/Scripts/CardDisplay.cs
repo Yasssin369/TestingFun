@@ -11,7 +11,7 @@ public class CardDisplay : MonoBehaviour
     private CardData data;
     private bool isFaceUp;
     private bool isLocked;
-
+    private bool isMatched = false;
     public void SetData(CardData cardData)
     {
         data = cardData;
@@ -63,5 +63,9 @@ public class CardDisplay : MonoBehaviour
     public void Lock()
     {
         isLocked = true;
+    }
+    public bool IsLocked()
+    {
+        return isMatched; 
     }
 }
