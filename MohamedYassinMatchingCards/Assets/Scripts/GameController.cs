@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
-
+using TMPro;
+using UnityEngine.UI;
 public class GameController : MonoBehaviour
 {
     public static GameController Instance;
@@ -15,6 +16,10 @@ public class GameController : MonoBehaviour
     private List<CardDisplay> flippedCards = new List<CardDisplay>();
     private bool isCheckingMatch;
 
+    public TextMeshProUGUI scoreText; 
+    private int score = 0;
+    private int matchedPairs = 0;
+    private int totalPairs = 0;
     private void Awake()
     {
         Instance = this;
@@ -41,9 +46,15 @@ public class GameController : MonoBehaviour
         int totalCards = rowCount * columnCount;
         int pairsNeeded = totalCards / 2;
 
+        totalPairs = totalCards / 2;
+        matchedPairs = 0;
+        score = 0;
+        UpdateScoreUI();
+
         List<CardData> selectedCards = new List<CardData>();
         List<CardData> deck = new List<CardData>();
 
+       
         for (int i = 0; i < pairsNeeded; i++)
         {
             var card = cardPool[i % cardPool.Count];
@@ -103,6 +114,10 @@ public class GameController : MonoBehaviour
         {
             flippedCards[0].Lock();
             flippedCards[1].Lock();
+
+            score += 100;
+            matchedPairs++;
+            UpdateScoreUI();
         }
         else
         {
@@ -112,5 +127,9 @@ public class GameController : MonoBehaviour
 
         flippedCards.Clear();
         isCheckingMatch = false;
+    }
+    private void UpdateScoreUI()
+    {
+        scoreText.text = $"Score: {score}";
     }
 }
