@@ -136,7 +136,7 @@ public class GameController : MonoBehaviour
 
             score += 100 + comboStreak * 10;
             matchedPairs++;
-
+            AudioController.Instance.PlayMatch();
             UIController.Instance.UpdateScore(score);
             flippedCards.Remove(card1); 
             flippedCards.Remove(card2);
@@ -145,7 +145,7 @@ public class GameController : MonoBehaviour
         {
             comboStreak = 0;
             UIController.Instance.HideCombo();
-
+            AudioController.Instance.PlayMismatch();
             card1.FlipToBack();
             card2.FlipToBack();
             flippedCards.Remove(card1);

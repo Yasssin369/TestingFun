@@ -52,6 +52,7 @@ public class UIController : MonoBehaviour
     }
     public void ShowGameOver(int score, int turns)
     {
+        AudioController.Instance.PlayGameOver();
         gameOverPanel.SetActive(true);
         gameOverText.text = $"You Win!\nScore: {score}\nTurns: {turns}";
     }

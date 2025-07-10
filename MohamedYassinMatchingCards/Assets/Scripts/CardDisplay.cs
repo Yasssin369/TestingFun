@@ -36,7 +36,7 @@ public class CardDisplay : MonoBehaviour
     {
         if (isLocked || isFaceUp)
             return;
-
+        AudioController.Instance.PlayFlip();
         isFaceUp = true;
         Sequence.Create()
             .Group(Tween.LocalRotation(transform, new Vector3(0, 90, 0), 0.15f))
@@ -48,7 +48,7 @@ public class CardDisplay : MonoBehaviour
     {
         if (!isFaceUp)
             return;
-
+        AudioController.Instance.PlayFlip();
         isFaceUp = false;
         Sequence.Create()
             .Group(Tween.LocalRotation(transform, new Vector3(0, 90, 0), 0.15f))
