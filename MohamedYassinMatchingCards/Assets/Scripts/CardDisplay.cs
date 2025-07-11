@@ -84,7 +84,6 @@ public class CardDisplay : MonoBehaviour
     {
         isLocked = true;
         isFaceUp = true;
-
         front.SetActive(false);
         back.SetActive(false);
     }
