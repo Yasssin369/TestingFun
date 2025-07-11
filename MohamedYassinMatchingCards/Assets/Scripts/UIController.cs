@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 using PrimeTween;
-
+using UnityEngine.SceneManagement;
 public class UIController : MonoBehaviour
 {
     public static UIController Instance;
@@ -60,5 +60,10 @@ public class UIController : MonoBehaviour
     {
         gameOverPanel.SetActive(false);
         GameController.Instance.SetupGame(GameController.Instance.rows, GameController.Instance.columns);
+    }
+    public void OnMainMenuButtonClicked()
+    {
+        SceneManager.LoadScene("MainMenu");
+
     }
 }

@@ -4,6 +4,13 @@ using System.Linq;
 
 public class GameController : MonoBehaviour
 {
+    public enum GameMode
+    {
+        Easy_2x3,
+        Medium_4x4,
+        Hard_5x6
+    }
+    public static GameMode SelectedMode = GameMode.Easy_2x3;
     public static GameController Instance;
 
     public GridLayoutController gridLayout;
@@ -32,6 +39,22 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
+        switch (SelectedMode)
+        {
+            case GameMode.Easy_2x3:
+                rows = 2;
+                columns = 3;
+                break;
+            case GameMode.Medium_4x4:
+                rows = 4;
+                columns = 4;
+                break;
+            case GameMode.Hard_5x6:
+                rows = 5;
+                columns = 6;
+                break;
+        }
+
         StartCoroutine(DelayedSetup());
     }
     private void Update()
@@ -92,6 +115,7 @@ public class GameController : MonoBehaviour
         }
         else
         {
+            
             List<CardData> selectedCards = new List<CardData>();
             for (int i = 0; i < pairsNeeded; i++)
             {
@@ -251,7 +275,7 @@ public class GameController : MonoBehaviour
         turnsTaken = loadedData.turnsTaken;
         comboStreak = loadedData.comboStreak;
 
-        SetupGame(rows, columns); // This will now use loadedData.orderedCardIds
+        SetupGame(rows, columns); 
 
         UIController.Instance.UpdateScore(score);
         UIController.Instance.UpdateTurns(turnsTaken);
@@ -270,6 +294,6 @@ public class GameController : MonoBehaviour
 
         Debug.Log($"Game loaded. Matched cards restored: {matchedCount}/{loadedData.matchedCardIds.Count}");
 
-        loadedData = null; // cleanup to avoid stale reuse
+        loadedData = null; 
     }
 }
