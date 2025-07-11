@@ -57,17 +57,7 @@ public class GameController : MonoBehaviour
 
         StartCoroutine(DelayedSetup());
     }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            SaveGame();
-        }
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            LoadGame();
-        }
-    }
+  
     private System.Collections.IEnumerator DelayedSetup()
     {
         yield return new WaitForEndOfFrame();
@@ -291,8 +281,11 @@ public class GameController : MonoBehaviour
                 matchedCount++;
             }
         }
+        matchedPairs = loadedData.matchedCardIds
+        .GroupBy(id => id)
+        .Count(g => g.Count() >= 2);
 
-        Debug.Log($"Game loaded. Matched cards restored: {matchedCount}/{loadedData.matchedCardIds.Count}");
+        //Debug.Log($"Game loaded. Matched cards restored: {matchedCount}/{loadedData.matchedCardIds.Count}");
 
         loadedData = null; 
     }
