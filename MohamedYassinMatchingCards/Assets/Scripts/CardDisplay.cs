@@ -80,4 +80,12 @@ public class CardDisplay : MonoBehaviour
     {
         return isLocked;
     }
+    public void ForceMatch()
+    {
+        isLocked = true;
+        isFaceUp = true;
+
+        front.SetActive(false);
+        back.SetActive(false);
+    }
 }
