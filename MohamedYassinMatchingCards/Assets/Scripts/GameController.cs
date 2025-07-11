@@ -6,6 +6,7 @@ public class GameController : MonoBehaviour
 {
     public enum GameMode
     {
+        //modes selection
         Easy_2x3,
         Medium_4x4,
         Hard_5x6
@@ -21,7 +22,6 @@ public class GameController : MonoBehaviour
     public int columns = 2;
 
     private List<CardDisplay> flippedCards = new List<CardDisplay>();
-    // private bool isCheckingMatch;
 
     private int score = 0;
     private int matchedPairs = 0;
@@ -63,7 +63,7 @@ public class GameController : MonoBehaviour
         yield return new WaitForEndOfFrame();
         SetupGame(rows, columns);
     }
-
+    //preparing the game 
     public void SetupGame(int rowCount, int columnCount)
     {
         foreach (Transform child in cardGrid)
@@ -131,7 +131,7 @@ public class GameController : MonoBehaviour
 
         flippedCards.Clear();
     }
-
+    //random shuffle algo 
     private void Shuffle(List<CardData> list)
     {
         for (int i = list.Count - 1; i > 0; i--)
@@ -156,11 +156,10 @@ public class GameController : MonoBehaviour
             turnsTaken++;
             UIController.Instance.UpdateTurns(turnsTaken);
 
-            //isCheckingMatch = true;
             StartCoroutine(CheckMatch());
         }
     }
-
+    //comparison happns here
     private System.Collections.IEnumerator CheckMatch()
     {
         var activeCards = flippedCards.FindAll(c => !c.IsLocked());
@@ -198,7 +197,6 @@ public class GameController : MonoBehaviour
             flippedCards.Remove(card2);
         }
 
-        // turnsTaken++;
         UIController.Instance.UpdateTurns(turnsTaken);
 
 
@@ -206,6 +204,7 @@ public class GameController : MonoBehaviour
             StartCoroutine(CheckMatch());
         CheckGameOver();
     }
+    //to end the game and show panl
     private void CheckGameOver()
     {
         if (matchedPairs >= totalPairs)
@@ -285,7 +284,6 @@ public class GameController : MonoBehaviour
         .GroupBy(id => id)
         .Count(g => g.Count() >= 2);
 
-        //Debug.Log($"Game loaded. Matched cards restored: {matchedCount}/{loadedData.matchedCardIds.Count}");
 
         loadedData = null; 
     }

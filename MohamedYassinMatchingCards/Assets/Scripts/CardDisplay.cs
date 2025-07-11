@@ -12,7 +12,7 @@ public class CardDisplay : MonoBehaviour
     private CardData data;
     private bool isFaceUp;
     private bool isLocked;
-    //private bool isMatched = false;
+    //data filling
     public void SetData(CardData cardData)
     {
         data = cardData;
@@ -31,7 +31,7 @@ public class CardDisplay : MonoBehaviour
 
         GameController.Instance.OnCardSelected(this);
     }
-
+    //prime tween for easier and efficent code
     public void FlipToFront()
     {
         if (isLocked || isFaceUp)
@@ -80,6 +80,8 @@ public class CardDisplay : MonoBehaviour
     {
         return isLocked;
     }
+    //for the load so it doesnt have
+    // the annoying squares..
     public void ForceMatch()
     {
         isLocked = true;
